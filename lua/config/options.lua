@@ -2,6 +2,8 @@
 -- Description : 编辑器选项
 -- 参考: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
+local os = require("utils.os")
+
 local g = vim.g
 local opt = vim.opt
 
@@ -79,6 +81,8 @@ opt.foldmethod = "expr" -- 使用表达式折叠
 opt.foldtext = "" -- 折叠文本
 
 -- 要让yazi正常工作参考：https://github.com/mikavilpas/yazi.nvim/issues/882
-vim.o.shell = "pwsh"
-vim.o.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
-opt.shellxquote = ""
+if os.is_win() then
+    vim.o.shell = "pwsh"
+    vim.o.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
+    opt.shellxquote = ""
+end

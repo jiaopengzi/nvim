@@ -40,7 +40,42 @@ source ~/.bashrc
 
 
 
-## 二、安装插件
+## 二、安装 neovim  插件依赖
+
+### 1、windows
+
+```
+scoop update
+# 安装 fzf
+scoop install fzf
+
+# 安装 yazi 和依赖
+scoop install yazi
+scoop install ffmpeg 7zip jq poppler fd ripgrep fzf zoxide resvg imagemagick
+```
+
+
+
+### 2、Debian Ubuntu yazi安装待完成
+
+```
+sudo apt update
+
+# 安装 fzf
+sudo apt install fzf
+
+# 使用二进制文件下载安装 yazi
+curl -LO https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-musl.zip
+sudo rm -rf yazi-temp
+sudo unzip yazi-x86_64-unknown-linux-musl.zip -d yazi-temp
+sudo mv yazi-temp/yazi-x86_64-unknown-linux-musl/{ya,yazi} /usr/local/bin
+
+sudo apt install ffmpeg 7zip jq poppler-utils fd-find ripgrep fzf zoxide imagemagick -y
+```
+
+
+
+## 二、安装 neovim  插件
 
 ### 1、windows
 
@@ -74,4 +109,7 @@ git clone https://gitee.com/jiaopengzi/nvim ~/.config/nvim
 
 
 
-执行`nvim`，安装插件。使用 `:LazyHealth`检查健康状况
+执行`nvim`，安装插件。
+
+
+

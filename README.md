@@ -87,7 +87,7 @@ Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
 Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
 
 # 克隆配置
-git clone https://gitee.com/jiaopengzi/nvim $env:LOCALAPPDATA\nvim
+git clone git@gitee.com:jiaopengzi/nvim.git $env:LOCALAPPDATA\nvim
 ```
 
 
@@ -102,7 +102,7 @@ mv ~/.local/state/nvim{,.bak}
 mv ~/.cache/nvim{,.bak}
 
 # 克隆配置
-git clone https://gitee.com/jiaopengzi/nvim ~/.config/nvim
+git clone git@gitee.com:jiaopengzi/nvim.git ~/.config/nvim
 ```
 
 

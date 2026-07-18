@@ -4,7 +4,7 @@
 
 参考官方文档：https://github.com/neovim/neovim/blob/master/INSTALL.md
 
-### 1、Windwos 安装
+### 1、Windows 安装
 
 在 windows 中使用 scoop 安装。
 

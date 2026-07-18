@@ -1,5 +1,5 @@
 -- FilePath    : nvim\lua\plugins\neovim\blink.cmp.lua
--- Description : 代码提示等, 还未配置完成。 
+-- Description : 代码提示等, 还未配置完成。
 
 return {
     'saghen/blink.cmp',
@@ -14,8 +14,6 @@ return {
     -- If you use nix, you can build from source using latest nightly rust with:
     -- build = 'nix run .#build-plugin',
 
-    ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
     opts = {
         -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
         -- 'super-tab' for mappings similar to vscode (tab to accept)

@@ -75,7 +75,7 @@ sudo apt install ffmpeg 7zip jq poppler-utils fd-find ripgrep fzf zoxide imagema
 
 
 
-## 二、安装 neovim  插件
+## 三、安装 neovim 插件
 
 ### 1、windows
 
@@ -109,7 +109,17 @@ git clone git@gitee.com:jiaopengzi/nvim.git ~/.config/nvim
 
 
 
-执行`nvim`，安装插件。
+首次执行 `nvim` 时, 会由 Neovim 0.12 的原生 `vim.pack` 自动安装插件。
+
+插件版本锁文件位于 [nvim-pack-lock.json](nvim-pack-lock.json), 建议和配置一起纳入版本控制。
+
+常用命令:
+
+```vim
+:lua vim.pack.update()                 " 检查并更新插件
+:lua vim.pack.update(nil, { force = true })   " 跳过确认直接更新插件
+:checkhealth vim.pack
+```
 
 
 

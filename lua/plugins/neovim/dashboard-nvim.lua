@@ -5,6 +5,9 @@ return {
 
     "nvimdev/dashboard-nvim",
     lazy = false,
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+    },
 
     -- https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=jnvim
 
@@ -38,12 +41,12 @@ return {
                     { icon = ' ', key = 'g', desc = '  Find Text', action = ':FzfLua live_grep', },
                     { icon = ' ', key = 'r', desc = '  Recent Files', action = ':FzfLua oldfiles', },
                     { icon = ' ', key = 'c', desc = '  Config', action = ':lua require("yazi").yazi({}, vim.fn.stdpath("config"))', },
-                    { icon = ' ', key = 'p', desc = '  Plugins', action = ':Lazy', },
+                    { icon = ' ', key = 'p', desc = '  Plugins', action = ':PackStatus', },
                     { icon = ' ', key = 'q', desc = '  Quit', action = ':qa', },
                 },
 
                 footer = function()
-                    local stats = require("lazy").stats()
+                    local stats = require("config.pack").stats()
                     local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
                     return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
                 end,

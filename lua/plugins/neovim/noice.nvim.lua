@@ -4,6 +4,9 @@
 return {
     "folke/noice.nvim",
     event = "VeryLazy",
+    dependencies = {
+        "MunifTanjim/nui.nvim",
+    },
     opts = {
         lsp = {
             override = {
@@ -45,9 +48,9 @@ return {
     },
     config = function(_, opts)
         -- HACK: noice shows messages from before it was enabled,
-        -- but this is not ideal when Lazy is installing plugins,
+        -- but this is not ideal when vim.pack is installing or updating plugins,
         -- so clear the messages in this case.
-        if vim.o.filetype == "lazy" then
+        if vim.api.nvim_buf_get_name(0):match("^nvim%-pack://") then
             vim.cmd([[messages clear]])
         end
         require("noice").setup(opts)

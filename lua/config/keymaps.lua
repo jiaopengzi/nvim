@@ -102,43 +102,57 @@ map({ "n", "v" }, '<S-Tab>', '<gv', { noremap = true, silent = true })
 -- ======================================================================== 自定义快捷键开始
 
 -- ======================================================================== hop 插件快捷键开始
-local hop = require("hop")
-local directions = require("hop.hint").HintDirection
-local positions = require("hop.hint").HintPosition
+---按需加载 hop 模块, 避免插件懒加载阶段在启动时直接 require 失败。
+---@return table, table, table
+local function load_hop_modules()
+    local hop = require("hop")
+    local directions = require("hop.hint").HintDirection
+    local positions = require("hop.hint").HintPosition
+    return hop, directions, positions
+end
 
 map({ "n", "v" }, "<leader><leader>w", function()
+    local hop, directions = load_hop_modules()
     hop.hint_words({ direction = directions.AFTER_CURSOR })
 end, { desc = "跳转到下一个单词的开头" })
 
 map({ "n", "v" }, "<leader><leader>e", function()
+    local hop, directions, positions = load_hop_modules()
     hop.hint_words({ direction = directions.AFTER_CURSOR, hint_position = positions.END })
 end, { desc = "跳转到下一个单词的结尾" })
 
 map({ "n", "v" }, "<leader><leader>b", function()
+    local hop, directions = load_hop_modules()
     hop.hint_words({ direction = directions.BEFORE_CURSOR })
 end, { desc = "跳转到上一个单词的开头" })
 
 map({ "n", "v" }, "<leader><leader>v", function()
+    local hop, directions, positions = load_hop_modules()
     hop.hint_words({ direction = directions.BEFORE_CURSOR, hint_position = positions.END })
 end, { desc = "跳转到上一个单词的结尾" })
 
 map({ "n", "v" }, "<leader><leader>l", function()
+    local hop, directions = load_hop_modules()
     hop.hint_camel_case({ direction = directions.AFTER_CURSOR })
 end, { desc = "跳转到下一个单词的开头（驼峰命名）" })
 
 map({ "n", "v" }, "<leader><leader>h", function()
+    local hop, directions = load_hop_modules()
     hop.hint_camel_case({ direction = directions.BEFORE_CURSOR })
 end, { desc = "跳转到上一个单词的开头（驼峰命名）" })
 
 map({ "n", "v" }, "<leader><leader>a", function()
+    local hop = load_hop_modules()
     hop.hint_anywhere({})
 end, { desc = "跳转到任意字符" })
 
 map({ "n", "v" }, "<leader><leader>j", function()
+    local hop, directions = load_hop_modules()
     hop.hint_lines({ direction = directions.AFTER_CURSOR })
 end, { desc = "向下跳转(行)" })
 
 map({ "n", "v" }, "<leader><leader>k", function()
+    local hop, directions = load_hop_modules()
     hop.hint_lines({ direction = directions.BEFORE_CURSOR })
 end, { desc = "向上跳转(行)" })
 -- ======================================================================== hop 插件快捷键结束

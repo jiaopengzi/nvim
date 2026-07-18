@@ -76,6 +76,14 @@
         "terminal.ansiYellow": "#FBA922",
         "activityBar.background": "#43261E",
         "titleBar.activeBackground": "#5E362B",
-        "titleBar.activeForeground": "#FCF9F9"
+        "titleBar.activeForeground": "#FCF9F9",
+        "titleBar.inactiveBackground": "#764335",
+        "titleBar.inactiveForeground": "#FCF9F9",
+        "statusBar.background": "#764335",
+        "statusBar.foreground": "#FCF9F9",
+        "statusBar.debuggingBackground": "#764335",
+        "statusBar.debuggingForeground": "#FCF9F9",
+        "statusBar.noFolderBackground": "#764335",
+        "statusBar.noFolderForeground": "#FCF9F9"
     }
 }

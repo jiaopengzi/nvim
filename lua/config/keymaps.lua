@@ -93,6 +93,12 @@ map({ "n", "v" }, "<leader>p", single_yank.paste_with_z_register, { desc = "粘�
 -- 查找替换
 map({ "n", "v" }, '<leader><leader>s', sr.search_selection_content, { desc = "搜索当前选中内容" })
 map({ "n", "v" }, '<leader><leader>r', sr.replace_selection_content, { desc = "替换当前选中内容" })
+
+-- Tab 缩进
+map({ "n", "v" }, '<Tab>', '>gv', { noremap = true, silent = true })
+
+-- Shift+Tab 反缩进
+map({ "n", "v" }, '<S-Tab>', '<gv', { noremap = true, silent = true })
 -- ======================================================================== 自定义快捷键开始
 
 -- ======================================================================== hop 插件快捷键开始

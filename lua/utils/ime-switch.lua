@@ -12,12 +12,12 @@ local vk = require("utils.virtual-keyboard")
 
 -- 切换到英文输入法辅助过渡
 local function switch_to_english_auxiliary()
-    vk.press_ctrl_key(vk.Key.VK_9) -- Ctrl + 9
+    vk.press_ctrl_key(vk.Key.VK_8) -- Ctrl + 8
 end
 
 -- 切换到中文输入法辅助过渡
 local function switch_to_chinese_auxiliary()
-    vk.press_ctrl_key(vk.Key.VK_8) -- Ctrl + 8
+    vk.press_ctrl_key(vk.Key.VK_9) -- Ctrl + 9
 end
 
 -- 切换到中文输入法
@@ -121,6 +121,7 @@ function M.insert_enter()
     local right_is_en = M.check_char_at_cursor_right_is_english()
     local left_is_cn  = M.check_char_at_cursor_left_is_chinese()
     local right_is_cn = M.check_char_at_cursor_right_is_chinese()
+
 
     if left_is_en and right_is_en then
         -- 如果左右两侧都是英文字符，切换到英文输入法

@@ -2,7 +2,7 @@
 -- Author      : jiaopengzi
 -- Blog        : https://jiaopengzi.com
 -- Copyright   : Copyright (c) 2025 by jiaopengzi, All Rights Reserved.
--- Description : 文件头插入 
+-- Description : 文件头插入
 
 local M = {}
 
@@ -47,6 +47,9 @@ function M.insert_file_header()
     local row_description = "Description : "
     local lines = {}
 
+    -- 调试查看类型
+    -- print("filetype===============>",filetype)
+
     if filetype == "go" then
         lines = {
             "//",
@@ -59,7 +62,7 @@ function M.insert_file_header()
         }
     elseif filetype == "typescript" or filetype == "javascript" then
         lines = {
-            "/*",
+            "/**",
             " * " .. row_filepath,
             " * " .. row_author,
             " * " .. row_blog,
@@ -94,6 +97,23 @@ function M.insert_file_header()
             "-- " .. row_blog,
             "-- " .. row_copyright,
             "-- " .. row_description,
+        }
+    elseif filetype == "yaml" or filetype == "yml" or filetype == "ps1" or filetype == "python" then
+        lines = {
+            "# " .. row_filepath,
+            "# " .. row_author,
+            "# " .. row_blog,
+            "# " .. row_copyright,
+            "# " .. row_description,
+        }
+    elseif filetype == "sh" or filetype == "bash" then
+        lines = {
+            "#!/bin/bash",
+            "# " .. row_filepath,
+            "# " .. row_author,
+            "# " .. row_blog,
+            "# " .. row_copyright,
+            "# " .. row_description,
         }
     end
 

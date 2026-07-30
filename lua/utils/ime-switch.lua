@@ -3,33 +3,90 @@
 -- Blog        : https://jiaopengzi.com
 -- Copyright   : Copyright (c) 2025 by jiaopengzi, All Rights Reserved.
 -- Description : 输入法切换模块(Input method editor switch)
-
--- **注意在 windows 终端中使用确保使用的是管理员权限运行，否则无法模拟按键**
+--               直接调用 Windows IME 系统 API 切换中英文, 不依赖任何输入法快捷键
 
 local M = {}
 
-local vk = require("utils.virtual-keyboard")
+local ffi = require("ffi") -- 使用 LuaJIT 的 FFI 库调用 Windows API
 
--- 切换到英文输入法辅助过渡
-local function switch_to_english_auxiliary()
-    vk.press_ctrl_key(vk.Key.VK_8) -- Ctrl + 8
+-- 声明所需的 Windows IME 相关 API
+ffi.cdef [[
+    void*   GetForegroundWindow(void);
+    void*   ImmGetDefaultIMEWnd(void* hWnd);
+    intptr_t SendMessageW(void* hWnd, unsigned int Msg, uintptr_t wParam, intptr_t lParam);
+    void*   ImmGetContext(void* hWnd);
+    int     ImmReleaseContext(void* hWnd, void* hIMC);
+    int     ImmSetOpenStatus(void* hIMC, int fOpen);
+    int     ImmGetOpenStatus(void* hIMC);
+]]
+
+-- 加载所需 DLL(user32/imm32), 加载失败时回退到默认 C 命名空间
+local ok_user32, user32 = pcall(ffi.load, "user32")
+if not ok_user32 then
+    user32 = ffi.C
+end
+local ok_imm32, imm32 = pcall(ffi.load, "imm32")
+if not ok_imm32 then
+    imm32 = ffi.C
 end
 
--- 切换到中文输入法辅助过渡
-local function switch_to_chinese_auxiliary()
-    vk.press_ctrl_key(vk.Key.VK_9) -- Ctrl + 9
+-- WM_IME_CONTROL 消息及其子命令, 用于通过默认 IME 窗口读写开关状态
+local WM_IME_CONTROL    = 0x0283
+local IMC_GETOPENSTATUS = 0x0005
+local IMC_SETOPENSTATUS = 0x0006
+
+local NULL              = ffi.new("void*", nil)
+
+-- 通过 ImmSetOpenStatus 设置前台窗口的输入法开关状态
+-- @param open boolean true 为中文(打开), false 为英文(关闭)
+-- @return boolean 是否设置成功
+local function set_open_status_by_context(hwnd, open)
+    local himc = imm32.ImmGetContext(hwnd)
+    if himc == NULL then
+        return false
+    end
+
+    local ret = imm32.ImmSetOpenStatus(himc, open and 1 or 0)
+    imm32.ImmReleaseContext(hwnd, himc)
+    return ret ~= 0
+end
+
+-- 通过默认 IME 窗口发送 WM_IME_CONTROL 消息设置输入法开关状态
+-- @param open boolean true 为中文(打开), false 为英文(关闭)
+-- @return boolean 是否设置成功
+local function set_open_status_by_ime_window(hwnd, open)
+    local ime_wnd = imm32.ImmGetDefaultIMEWnd(hwnd)
+    if ime_wnd == NULL then
+        return false
+    end
+
+    user32.SendMessageW(ime_wnd, WM_IME_CONTROL, IMC_SETOPENSTATUS, open and 1 or 0)
+    return true
+end
+
+-- 设置输入法开关状态, 优先使用输入上下文, 失败时回退到默认 IME 窗口消息
+-- @param open boolean true 为中文, false 为英文
+local function set_open_status(open)
+    local hwnd = user32.GetForegroundWindow()
+    if hwnd == NULL then
+        return
+    end
+
+    if set_open_status_by_context(hwnd, open) then
+        return
+    end
+
+    set_open_status_by_ime_window(hwnd, open)
 end
 
 -- 切换到中文输入法
 function M.switch_to_chinese()
-    switch_to_english_auxiliary()
-    switch_to_chinese_auxiliary()
+    set_open_status(true)
 end
 
--- 切换到英文输入法, 保证在中文输入法下按下 shift 键切换到英文输入法
+-- 切换到英文输入法
 function M.switch_to_english()
-    M.switch_to_chinese()
-    vk.press_key(vk.Key.VK_Shift) -- 按下 Shift 键切换输入法
+    set_open_status(false)
 end
 
 -- 使用 Lua 模式匹配来检查是否是 CJK 基本区（U+4E00～U+9FFF）中的中文字符
